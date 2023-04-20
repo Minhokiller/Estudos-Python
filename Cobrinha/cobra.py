@@ -18,6 +18,8 @@ class Cobra:
             novo_x, novo_y = self.corpo[index - 1].xcor(), self.corpo[index -1].ycor()
             self.corpo[index].goto(novo_x,novo_y)
         self.cabeca.forward(self.VEL)
+    def crecer_cobra(self):
+        self.novo_segmento(self.corpo[-1].pos())
 
     def inicializar_cobra(self):
         for pos in self.POS_INICIAL:
