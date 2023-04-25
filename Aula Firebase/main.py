@@ -1,35 +1,38 @@
 import requests
 import json
+from auth import Auth
+from post import Create_User
+from patch import Patch
+from busca import Busca
+from apaga import Apaga
 
 link = "https://aulafirebase-9e6c5-default-rtdb.firebaseio.com/"
 
-#venda
-#dados = {'cliente': 'andre', 'preco': '200', 'produto' : 'fone ouvido'}
-#requisicao = requests.post(f'{link}/Vendas/.json', data=json.dumps(dados))
-#print(requisicao)
-#print(requisicao.text)
+auth = Auth()
 
-#editar
+while True:
+    print("MENU:")
+    print("1. Cadastra")
+    print("2. Atualiza")
+    print("3. Busca")
+    print("4. Apaga")
+    print("5. Sair")
+    escolha = input("Escolha uma opção (1-5): ")
 
-#dados = {'cliente': 'Craudio'}
-#requisicao = requests.patch(f'{link}/Vendas/-NTskUESSNsQZH0aA5Ft.json', data=json.dumps(dados))
-#print(requisicao)
-#print(requisicao.text)
-
-#request
-
-requisicao = requests.get(f'{link}/Vendas/.json')
-print(requisicao)
-dic_requisicao = requisicao.json()
-print(dic_requisicao['ID'])
-for id_venda in dic_requisicao:
-    cliente = dic_requisicao[id_venda]['cliente']
-    if cliente == "Craudio":
-        print(id_venda)
-        id_andre = id_venda
-
-#request
-
-requisicao = requests.delete(f'{link}/Vendas/{id_andre}/.json')
-print(requisicao)
-print(requisicao.text)
+    if escolha == "1":
+        print("Você escolheu a Opção 1.")
+        Create_User()
+    elif escolha == "2":
+        print("Você escolheu a Opção 2.")
+        Patch()
+    elif escolha == "3":
+        print("Você escolheu a Opção 3.")
+        Busca()
+    elif escolha == "4":
+        print("Você escolheu a Opção 4.")
+        Apaga()
+    elif escolha == "5":
+        print("Saindo do programa...")
+        break
+    else:
+        print("Opção inválida. Por favor, escolha novamente.")
