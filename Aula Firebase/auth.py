@@ -7,7 +7,7 @@ email = input('Insira o Usuario: ')
 senha = input('Insira a Senha: ')
 
 # Endpoint de login por e-mail e senha
-url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBCUFXmB9bKtZx-dRuQoaTUX_hNTIDDSP8"
+url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=XXX"
 
 # Corpo da requisição
 data = {
