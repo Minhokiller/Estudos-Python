@@ -29,17 +29,17 @@ quadrado.penup()
 quadrado.goto(180, 0)
 
 # Criando os obstáculos verdes
-obstaculo_1 = turtle.Turtle()
-obstaculo_1.penup()
-obstaculo_1.goto(-150, 35)
-obstaculo_1.color('green')
-obstaculo_1.shape('square')
+#obstaculo_1 = turtle.Turtle()
+#obstaculo_1.penup()
+#obstaculo_1.goto(-150, 35)
+#obstaculo_1.color('green')
+#obstaculo_1.shape('square')
 
-obstaculo_2 = turtle.Turtle()
-obstaculo_2.penup()
-obstaculo_2.goto(0, -25)
-obstaculo_2.color('green')
-obstaculo_2.shape('square')
+#obstaculo_2 = turtle.Turtle()
+#obstaculo_2.penup()
+#obstaculo_2.goto(0, -25)
+#obstaculo_2.color('green')
+#obstaculo_2.shape('square')
 
 #obstaculo_3 = turtle.Turtle()
 #obstaculo_3.penup()
@@ -70,10 +70,15 @@ IND_SIZE = 100  # cada indivíduo terá 100 movimentos
 
 # Define os possíveis movimentos (cima, direita, baixo)
 
-POSSIBLE_MOVES = [(0, 10), (10, 0), (0, -10)]
+#POSSIBLE_MOVES = [(0, 10), (10, 0), (0, -10)]
 
 # Gera a população inicial
 population = []
+x=-160
+y=0
+RIGHT = (x+10, y)
+UP = (x, y+10)
+DOWN = (x , y-10)
 for i in range(POP_SIZE):
     # Gera um indivíduo aleatório
     individuo = []
@@ -81,59 +86,78 @@ for i in range(POP_SIZE):
     for j in range(IND_SIZE):
         # Escolhe um movimento aleatório que obedeça às limitações
         if last_move is None:  # se for o primeiro movimento, pode ser qualquer um
-            move = random.choice(POSSIBLE_MOVES)
+            move = (RIGHT)
         else:
-            possible_moves = [(0,0)]
-            if last_move == (0, 10):  # último movimento foi para cima
-                possible_moves = [(0, 10), (10, 0)]
-            elif last_move == (1, 0):  # último movimento foi para a direita
-                possible_moves = [(0, 10), (10, 0), (0, -10)]
-            elif last_move == (0, -1):  # último movimento foi para baixo
-                possible_moves = [(0, -10), (10, 0)]
+            possible_moves = [RIGHT]
+            if last_move == ("UP"):  # último movimento foi para cima
+                possible_moves = [UP, RIGHT]
+            elif last_move == ("RIGHT"):  # último movimento foi para a direita
+                possible_moves = [UP, RIGHT, DOWN]
+            elif last_move == ("DOWN"):  # último movimento foi para baixo
+                possible_moves = [DOWN, RIGHT]
             move = random.choice(possible_moves)
+        if move == RIGHT:
+            x =x+10
+            last_move = ("RIGHT") 
+            move = (x,y)
+        elif move == UP:
+            Y = y+10
+            last_move = ("UP")
+            move = (x,y)
+        else:
+            y = y-10
+            last_move = ('DOWN')  
+            move = (x,y)  
+        print(f"o move é{move}")
+        print(f"x e y = {x} e {y}")    
         individuo.append(move)
-        last_move = move  # atualiza o último movimento
+        
+    #x = 0
+    #y = 0
     population.append(individuo)
 
+while not colisao(circulo, quadrado):
+    for item in population:
+        for indiv in individuo:
+                # Loop while para mover o círculo vermelho até o quadrado azul
+            #while not colisao(circulo, quadrado):
+                # atualiza a direção atual e move o círculo
 
-for item in population:
-    for indiv in individuo:
-            # Loop while para mover o círculo vermelho até o quadrado azul
-        #while not colisao(circulo, quadrado):
-            # atualiza a direção atual e move o círculo
-            
-            circulo.pendown()
-            circulo.pensize(8)
-            print(indiv)
-            print(item)
-            #circulo.goto(indiv)
-            passos += 1
-            janela.title(f"{tentativas}")
-            circulo.penup()
-            
-            # Verificando colisões com as paredes verdes
-            if circulo.xcor() > 180 or circulo.xcor() < -180 or circulo.ycor() > 45 or circulo.ycor() < -45:
-                tentativas += 1
-                print('bateu na parede')
-                dist = ((circulo.xcor() - quadrado.xcor())**2 + (circulo.ycor() - quadrado.ycor())**2)**0.5
-                print(int(dist))
-                circulo.clear()
-                passos = 0
-                circulo.goto(-160, 0)
+                
+                circulo.pendown()
+                circulo.pensize(8)
+                
+                print(indiv)
+                print(item)
+                circulo.goto(indiv)
+                passos += 1
+                janela.title(f"{tentativas}")
+                circulo.penup()
+                
+                # Verificando colisões com as paredes verdes
+                if circulo.xcor() > 180 or circulo.xcor() < -180 or circulo.ycor() > 45 or circulo.ycor() < -45:
+                    tentativas += 1
+                    print('bateu na parede')
+                    dist = ((circulo.xcor() - quadrado.xcor())**2 + (circulo.ycor() - quadrado.ycor())**2)**0.5
+                    print(int(dist))
+                    circulo.clear()
+                    passos = 0
+                    input()
+                    circulo.goto(-160, 0)
 
-            
-            # Verificando colisões com os obstáculos verdes
-            elif colisao(circulo, obstaculo_1) or colisao(circulo, obstaculo_2):# or colisao(circulo, obstaculo_3):
-                tentativas += 1
-                print('bateu no obstaculo')
-                dist = ((circulo.xcor() - quadrado.xcor())**2 + (circulo.ycor() - quadrado.ycor())**2)**0.5
-                print(int(dist))
-                circulo.clear()
-                passos = 0
-                circulo.goto(-160, 0)
-            
-            else:
-                pass
+                
+                # Verificando colisões com os obstáculos verdes
+                #elif colisao(circulo, obstaculo_1) or colisao(circulo, obstaculo_2):# or colisao(circulo, obstaculo_3):
+                    #tentativas += 1
+                    #print('bateu no obstaculo')
+                    #dist = ((circulo.xcor() - quadrado.xcor())**2 + (circulo.ycor() - quadrado.ycor())**2)**0.5
+                    #print(int(dist))
+                    #circulo.clear()
+                    #passos = 0
+                    #circulo.goto(-160, 0)
+                
+                else:
+                    pass
 
 #Exibindo mensagem de vitória
 mensagem = turtle.Turtle()
