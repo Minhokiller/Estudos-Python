@@ -2,7 +2,7 @@ import random
 from turtle import Turtle
 class Cobra:
     POS_INICIAL = [(0,0),(0,20),(0,40)]
-    VEL = 5
+    VEL = 1
     DIREITA = 0
     ESQUERDA = 180
     CIMA = 90
@@ -28,6 +28,7 @@ class Cobra:
     def novo_segmento(self,pos):
         nova_cobra = Turtle()
         nova_cobra.shape('square')
+        nova_cobra.shapesize(2)
         nova_cobra.color(random.choice(self.sorteia_cores()))
         nova_cobra.penup()
         nova_cobra.goto(pos)

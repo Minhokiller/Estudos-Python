@@ -8,7 +8,7 @@ import time
 
 tela = Screen()
 tela.title('Jogo da cobrinha')
-tela.setup(600,620)
+tela.setup(420,420)
 tela.bgcolor('beige')
 jogo_on = True
 tela.tracer(0)
@@ -32,7 +32,7 @@ while jogo_on:
         cobra.crecer_cobra()
         
     cobra.mover() 
-    if cobra.cabeca.xcor() > 285 or cobra.cabeca.xcor() < -285 or cobra.cabeca.ycor() < -285 or cobra.cabeca.ycor() > 285:
+    if cobra.cabeca.xcor() > 200 or cobra.cabeca.xcor() < -200 or cobra.cabeca.ycor() < -200 or cobra.cabeca.ycor() > 200:
         jogo_on = False
         print('faleceu')
     tela.update()
