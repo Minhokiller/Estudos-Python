@@ -65,7 +65,7 @@ def colisao(turtle, objeto):
         return False
     
 # Define o tamanho da população e dos indivíduos
-POP_SIZE = 10
+POP_SIZE = 4
 IND_SIZE = 100  # cada indivíduo terá 100 movimentos
 
 # Define os possíveis movimentos (cima, direita, baixo)

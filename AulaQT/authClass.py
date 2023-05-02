@@ -1,24 +1,17 @@
 import requests
 
-# Dados de autenticação do usuário
-
-
-
-
 # Endpoint de login por e-mail e senha
-url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=XXX"
+url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=xxx"
 
 # Corpo da requisição
-data = {
-    "email": email,
-    "password": senha,
-    "returnSecureToken": True
-}
-
-class Auth():
-    def __init__(self):
-        email = input('Insira o Usuario: ')
-        senha = input('Insira a Senha: ')
+class Autentica():
+    def __init__(self,email, senha):
+        
+        data = {
+                "email": email,
+                "password": senha,
+                "returnSecureToken": True
+                }
         # Faz a chamada HTTP POST
         response = requests.post(url, json=data)
 
@@ -29,6 +22,9 @@ class Auth():
         if "idToken" in response_json:
             id_token = response_json["idToken"]
             print("Usuário autenticado com sucesso. ID do token:", id_token)
+            self.stat1 = True
         else:
             print("Erro na autenticação:", response_json)
-            exit()
+            self.stat1 = False
+    def esta_autenticado(self):
+        return self.stat1

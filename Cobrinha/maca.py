@@ -9,5 +9,5 @@ class Maca(Turtle):
         self.nova_maca()
     def nova_maca(self):
         self.penup()
-        x,y = random.randint(-280, 280), random.randint(-280, 280)
+        x,y = random.randint(-200, 200), random.randint(-200, 200)
         self.goto(x,y)
