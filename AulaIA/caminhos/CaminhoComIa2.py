@@ -5,6 +5,7 @@ import random
 janela = turtle.Screen()
 janela.setup(420, 420)
 tentativas = 0
+passos = 0
 janela.title(f"{tentativas}")
 janela.tracer(10)
 
@@ -33,18 +34,21 @@ obstaculo_1.penup()
 obstaculo_1.goto(-150, 35)
 obstaculo_1.color('green')
 obstaculo_1.shape('square')
+obstaculo_1.shapesize(1)
 
 obstaculo_2 = turtle.Turtle()
 obstaculo_2.penup()
 obstaculo_2.goto(0, -25)
 obstaculo_2.color('green')
 obstaculo_2.shape('square')
+obstaculo_2.shapesize(1)
 
 obstaculo_3 = turtle.Turtle()
 obstaculo_3.penup()
 obstaculo_3.goto(100, 10)
 obstaculo_3.color('green')
 obstaculo_3.shape('square')
+obstaculo_3.shapesize(1)
 
 # Criando o círculo vermelho
 circulo = turtle.Turtle()
@@ -55,7 +59,7 @@ circulo.goto(-160, 0)
 
 # Função para verificar colisões
 def colisao(turtle, objeto):
-    if turtle.distance(objeto) < 20:
+    if turtle.distance(objeto) < 30:
         return True
     else:
         return False
@@ -66,15 +70,12 @@ direcoes_permitidas = {
     "cima": ["cima", "direita"],
     "baixo": ["baixo", "direita"]
 }
-
 # define a direção inicial do círculo
 direcao_atual = "direita"
 
-POP_SIZE = 1
-IND_SIZE = 20
-mutation_rate = 1
-directions = ['direita']
-
+POP_SIZE = 10 
+IND_SIZE = 50
+#mutation_rate = 1
 
 population = []
 for i in range(POP_SIZE):
@@ -94,108 +95,91 @@ for i in range(POP_SIZE):
             elif last_move == ("baixo"):  # último movimento foi para baixo
                 possible_moves = ["baixo", "direita"]
             move = random.choice(possible_moves)
-        if move == ("direita"):
-            last_move = ("direita") 
-        elif move == ("cima"):
-            last_move = ("cima")
-        else:
-            last_move = ('baixo') 
-            #print('a') 
+        last_move = move 
+
         individuo.append(move)
     population.append(individuo)
-
-#print(population)
-
-while not colisao(circulo, quadrado):
+janela.tracer(10)
+game = True
+while game:   
     for pop in population:
-        #print(f"o population é :{pop}")
-        for ind in individuo:
-            #print(f"o individuo é :{ind}")
-            # escolhe uma direção aleatória permitida com base na direção atual
-            #direcoes_possiveis = direcoes_permitidas[direcao_atual]
+        tentativas += 1
+        janela.title(f"tentativas:{tentativas} passos:{passos}")
+        print(f"o population é :{population}")
+        circulo.goto(-160, 0)
+        circulo.clear()
+
+        for ind in pop:
+            passos += 1
+            janela.title(f"tentativas:{tentativas} passos:{passos}")
+            print(f"o individuo é :{ind}")
             direcao_aleatoria = ind
+            
 
             # atualiza a direção atual e move o círculo
             circulo.pendown()
             circulo.pensize(8)
             if direcao_aleatoria == "direita":
                 circulo.right(circulo.heading())
-                direcao_atual = "direita"
             elif direcao_aleatoria == "cima":
                 circulo.setheading(90)
-                direcao_atual = "cima"
             elif direcao_aleatoria == "baixo":
                 circulo.setheading(270)
-                direcao_atual = "baixo"
+            circulo.pencolor("red")
             circulo.forward(10)
-            janela.title(f"{tentativas}")
             circulo.penup()
             
-            # Verificando colisões com as paredes verdes
-            if circulo.xcor() > 180 or circulo.xcor() < -180 or circulo.ycor() > 45 or circulo.ycor() < -45:
-                tentativas += 1
-                #print('bateu na parede')
+            
+            #Verificando colisões com as paredes verdes
+            if circulo.xcor() > 190 or circulo.xcor() < -180 or circulo.ycor() > 35 or circulo.ycor() < -35:
+                print('bateu na parede')
                 dist = ((circulo.xcor() - quadrado.xcor())**2 + (circulo.ycor() - quadrado.ycor())**2)**0.5
-                #print(int(dist))
-                circulo.clear()
-                circulo.goto(-160, 0)
-
-            
-            # Verificando colisões com os obstáculos verdes
-            elif colisao(circulo, obstaculo_1) or colisao(circulo, obstaculo_2) or colisao(circulo, obstaculo_3):
-                tentativas += 1
-                #print('bateu no obstaculo')
-                dist = ((circulo.xcor() - quadrado.xcor())**2 + (circulo.ycor() - quadrado.ycor())**2)**0.5
-                #print(int(dist))
-                circulo.clear()
-                circulo.goto(-160, 0)
-    mutated_individuo = individuo
-    for kik in population:
-        for i in individuo:
-            if random.random() <= mutation_rate:
-                print(f"Nesse momento o i é {i}")
-                if i == "cima":  # último movimento foi para cima
-                    directions = ["cima", "direita"]
-                    last_move = ("cima")
-                elif i == "direita":  # último movimento foi para a direita
-                    directions = ["cima", "direita", "baixo"]
-                    last_move = ("direita")
-                elif i == "baixo":  # último movimento foi para baixo
-                    directions = ["baixo", "direita"]
-                    last_move = "baixo"
-                else:
-                    directions = ["crash"]
-                    last_move = ("crash")
-
-                new_direction = random.choice(directions)
-                mutated_individuo = new_direction
-            individuo.append(mutated_individuo)
-            print(f"Nesse momento foi apendado o  {mutated_individuo}")
-            
-        population.append(individuo)
-        print(f"Nesse momento foi apendado o population  {individuo}")
-    print(f"restart")
-        #print(mutated_individuo)
-            
-             
-            #else:
+                print(int(dist))       
                 
+                break
+                            
+            #Verificando colisões com os obstáculos verdes
+            elif colisao(circulo, obstaculo_1) or colisao(circulo, obstaculo_2) or colisao(circulo, obstaculo_3):
+                print('bateu no obstaculo')
+                dist = ((circulo.xcor() - quadrado.xcor())**2 + (circulo.ycor() - quadrado.ycor())**2)**0.5
+                print(int(dist))
+                break
+
+            if colisao (circulo, quadrado):
                 #Exibindo mensagem de vitória
-                #mensagem = turtle.Turtle()
-                #mensagem.penup()
-                #mensagem.goto(0, 80)
-                #mensagem.color('black')
-                #mensagem.write(f"O circulo chegou depois de: {tentativas} tentativas", align='center', font=('Arial', 14, 'bold'))
-                #mensagem.hideturtle()
+                mensagem = turtle.Turtle()
+                mensagem.penup()
+                mensagem.goto(0, 80)
+                mensagem.color('black')
+                mensagem.write(f"O circulo chegou depois de: {tentativas} tentativas", align='center', font=('Arial', 14, 'bold'))
+                mensagem.hideturtle()
+                game == False
+                break  
+        # ordena a população por distância em ordem crescente
+    populacao_ordenada = [x for _, x in sorted(zip(distancias, population))]
+    # seleciona os 5 melhores indivíduos
+    melhores_individuos = populacao_ordenada[:5]
 
-    #def mutate(individuo, mutation_rate):
-                       
+    # cria nova população
+    nova_populacao = []
+    for i in range(POP_SIZE):
+        if i < len(melhores_individuos):
+            # insere os melhores indivíduos na nova população sem mutação
+            nova_populacao.append(melhores_individuos[i])
+        else:
+            # seleciona um indivíduo aleatório dos 5 melhores
+            individuo_base = random.choice(melhores_individuos)
+            # realiza a mutação
+            novo_individuo = individuo_base[:IND_SIZE//2] + [random.choice(["cima", "direita", "baixo"]) for j in range(IND_SIZE//2)]
+            # insere o novo indivíduo na nova população
+            nova_populacao.append(novo_individuo)
+
+    # atualiza a população
+    population = nova_populacao
 
 
+print("fim")
 
-
-#Mantendo a janela aberta até o usuário fechar
-#mutate(individuo,0)
 janela.mainloop()
 
 
